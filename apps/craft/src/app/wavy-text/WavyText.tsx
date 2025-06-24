@@ -8,7 +8,7 @@ const PHASE_DELAY = 100; // 각 글자 간 지연 시간 (ms)
 
 function WavyItem({ item, index = 0 }: { item: string; index: number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const animationFrameRef = useRef<number>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
     const phaseOffset = index * PHASE_DELAY;
