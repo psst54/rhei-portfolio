@@ -182,7 +182,7 @@ export default function Screen() {
         </button>
       </div>
 
-      <div className="h-dvh min-h-full w-full rounded-2xl bg-blue-500/10 p-2">
+      <div className="h-[80dvh] min-h-full w-full rounded-2xl bg-blue-500/10 p-2">
         <Wrapper
           node={tree}
           onDragStart={handleDragStart}
