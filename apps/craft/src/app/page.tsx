@@ -40,6 +40,14 @@ const ITEM_LIST = [
     thumbnail:
       "https://tnzycdohhtvupgagmwfx.supabase.co/storage/v1/object/public/rhei-craft//wavy-text.webp",
   },
+  {
+    title: "Draggable Panel",
+    description:
+      "드래그 가능한 패널을 만들어 트리 구조를 변경하고 렌더링합니다.",
+    link: "/draggable-panel",
+    thumbnail:
+      "https://tnzycdohhtvupgagmwfx.supabase.co/storage/v1/object/public/rhei-craft//draggable-panel.webp",
+  },
 ];
 
 function CardItem({ data }: { data: Card }) {
