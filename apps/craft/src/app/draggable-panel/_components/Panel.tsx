@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { DragState, PanelNode } from "../type";
 
 export default function Panel({
@@ -85,16 +85,12 @@ export default function Panel({
     (e: React.DragEvent) => {
       e.preventDefault();
 
-      if (
-        localDragState.draggedNodeId &&
-        localDragState.targetNodeId &&
-        localDragState.position
-      ) {
-        onDrop(
-          localDragState.draggedNodeId,
-          localDragState.targetNodeId,
-          localDragState.position,
-        );
+      const draggedNodeId = globalDragState.draggedNodeId;
+      const targetNodeId = localDragState.targetNodeId;
+      const position = localDragState.position;
+
+      if (draggedNodeId && targetNodeId && position) {
+        onDrop(draggedNodeId, targetNodeId, position);
       }
       setLocalDragState({
         isDragging: false,
@@ -103,7 +99,7 @@ export default function Panel({
         position: null,
       });
     },
-    [localDragState, onDrop],
+    [localDragState, onDrop, globalDragState],
   );
 
   const handleDragEnd = useCallback(() => {
