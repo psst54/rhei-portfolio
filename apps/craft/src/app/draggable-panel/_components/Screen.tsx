@@ -16,18 +16,28 @@ const initialTree: Node = {
     type: "split",
     id: "split-2",
     left: {
-      type: "panel",
-      id: "panel-2",
+      type: "split",
+      id: "split-1",
+      left: {
+        type: "panel",
+        id: "panel-2",
+      },
+      right: {
+        type: "panel",
+        id: "panel-3",
+      },
+      orientation: "W",
+      ratio: 0.5,
     },
     right: {
       type: "panel",
-      id: "panel-3",
+      id: "panel-4",
     },
     orientation: "H",
-    ratio: 0.6,
+    ratio: 0.5,
   },
   orientation: "W",
-  ratio: 0.3,
+  ratio: 0.5,
 };
 
 export default function Screen() {
