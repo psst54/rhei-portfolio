@@ -28,10 +28,6 @@ export default function Panel({
     position: null,
   });
 
-  useEffect(() => {
-    console.log(localDragState);
-  }, [localDragState]);
-
   const handleDragStart = useCallback(
     (e: React.DragEvent) => {
       e.dataTransfer.setData("text/plain", id);
@@ -76,9 +72,19 @@ export default function Panel({
     [id, onDragOver],
   );
 
+  const handleDragLeave = useCallback(() => {
+    setLocalDragState({
+      isDragging: false,
+      draggedNodeId: null,
+      targetNodeId: null,
+      position: null,
+    });
+  }, []);
+
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
+
       if (
         localDragState.draggedNodeId &&
         localDragState.targetNodeId &&
@@ -124,22 +130,34 @@ export default function Panel({
       draggable
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onDragEnd={handleDragEnd}
     >
-      {isTarget && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
-          <span className="text-sm font-bold text-blue-600">
-            {/* {localDragState.position === "left"
-              ? "왼쪽"
-              : localDragState.position === "right"
-                ? "오른쪽"
-                : localDragState.position === "top"
-                  ? "위쪽"
-                  : "아래쪽"} */}
-          </span>
+      {isTarget && localDragState.position === "left" && (
+        <div className="absolute top-0 left-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
+          <span className="text-sm font-bold text-blue-600">왼쪽</span>
         </div>
       )}
+
+      {isTarget && localDragState.position === "right" && (
+        <div className="absolute top-0 right-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
+          <span className="text-sm font-bold text-blue-600">오른쪽</span>
+        </div>
+      )}
+
+      {isTarget && localDragState.position === "top" && (
+        <div className="absolute top-0 left-0 z-10 flex h-[50%] w-full items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
+          <span className="text-sm font-bold text-blue-600">위쪽</span>
+        </div>
+      )}
+
+      {isTarget && localDragState.position === "bottom" && (
+        <div className="absolute bottom-0 left-0 z-10 flex h-[50%] w-full items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
+          <span className="text-sm font-bold text-blue-600">아래쪽</span>
+        </div>
+      )}
+
       <span
         className={`font-bold transition-all duration-200 ${isBeingDragged ? "text-blue-300" : "text-white"}`}
       >
