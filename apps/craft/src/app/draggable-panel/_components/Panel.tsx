@@ -131,6 +131,15 @@ export default function Panel({
               targetNodeId: targetId,
               position,
             }));
+
+            // globalDragState도 업데이트하기 위해 onDragOver 호출
+            const fakeEvent = {
+              preventDefault: () => {},
+              currentTarget: closestPanel,
+              clientX: touch.clientX,
+              clientY: touch.clientY,
+            } as any;
+            onDragOver(fakeEvent, targetId);
           }
         }
       }
@@ -189,6 +198,7 @@ export default function Panel({
     globalDragState,
     onDrop,
     onDragEnd,
+    onDragOver,
   ]);
 
   const handleDragStart = useCallback(
@@ -279,8 +289,22 @@ export default function Panel({
     globalDragState.draggedNodeId === id || (isTouching && isDraggingTouch);
   const isTarget =
     (globalDragState.isDragging || isDraggingTouch) &&
-    localDragState.targetNodeId === id &&
+    (localDragState.targetNodeId === id ||
+      globalDragState.targetNodeId === id) &&
     !isBeingDragged;
+
+  // 현재 패널이 타겟인지 확인하고 위치 정보 가져오기
+  const getTargetPosition = () => {
+    if (localDragState.targetNodeId === id) {
+      return localDragState.position;
+    }
+    if (globalDragState.targetNodeId === id) {
+      return globalDragState.position;
+    }
+    return null;
+  };
+
+  const targetPosition = getTargetPosition();
 
   return (
     <>
@@ -317,25 +341,25 @@ export default function Panel({
         onDragEnd={handleDragEnd}
         style={{ touchAction: "none" }} // 모바일에서 스크롤 방지
       >
-        {isTarget && localDragState.position === "left" && (
+        {isTarget && targetPosition === "left" && (
           <div className="absolute top-0 left-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
             <span className="text-sm font-bold text-blue-600">왼쪽</span>
           </div>
         )}
 
-        {isTarget && localDragState.position === "right" && (
+        {isTarget && targetPosition === "right" && (
           <div className="absolute top-0 right-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
             <span className="text-sm font-bold text-blue-600">오른쪽</span>
           </div>
         )}
 
-        {isTarget && localDragState.position === "top" && (
+        {isTarget && targetPosition === "top" && (
           <div className="absolute top-0 left-0 z-10 flex h-[50%] w-full items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
             <span className="text-sm font-bold text-blue-600">위쪽</span>
           </div>
         )}
 
-        {isTarget && localDragState.position === "bottom" && (
+        {isTarget && targetPosition === "bottom" && (
           <div className="absolute bottom-0 left-0 z-10 flex h-[50%] w-full items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
             <span className="text-sm font-bold text-blue-600">아래쪽</span>
           </div>

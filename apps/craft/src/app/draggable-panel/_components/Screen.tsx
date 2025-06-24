@@ -57,9 +57,35 @@ export default function Screen() {
     }));
   }, []);
 
-  const handleDragOver = useCallback((e: React.DragEvent, nodeId: string) => {
-    // 드래그 오버 로직은 각 컴포넌트에서 처리
-  }, []);
+  const handleDragOver = useCallback(
+    (e: React.DragEvent, nodeId: string) => {
+      // 터치 드래그 시에도 globalDragState 업데이트
+      if (dragState.isDragging) {
+        const rect = e.currentTarget?.getBoundingClientRect();
+        if (rect) {
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const width = rect.width;
+          const height = rect.height;
+
+          let position: "left" | "right" | "top" | "bottom";
+
+          if (Math.abs(x - width / 2) > Math.abs(y - height / 2)) {
+            position = x < width / 2 ? "left" : "right";
+          } else {
+            position = y < height / 2 ? "top" : "bottom";
+          }
+
+          setDragState((prev) => ({
+            ...prev,
+            targetNodeId: nodeId,
+            position,
+          }));
+        }
+      }
+    },
+    [dragState.isDragging],
+  );
 
   const handleDragEnd = useCallback(() => {
     setDragState({
