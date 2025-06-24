@@ -33,6 +33,9 @@ export default function Panel({
   const [currentTouchPos, setCurrentTouchPos] = useState({ x: 0, y: 0 });
   const [isDraggingTouch, setIsDraggingTouch] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(
+    null,
+  );
   const touchRef = useRef<HTMLDivElement>(null);
 
   // 터치 드래그 상태를 globalDragState와 동기화
@@ -52,7 +55,6 @@ export default function Panel({
     if (!element) return;
 
     const handleTouchStart = (e: TouchEvent) => {
-      e.preventDefault();
       const touch = e.touches[0];
       const rect = element.getBoundingClientRect();
 
@@ -64,21 +66,9 @@ export default function Panel({
       });
       setIsTouching(true);
       setIsDraggingTouch(false);
-    };
 
-    // document 레벨에서 터치 이벤트 처리
-    const handleDocumentTouchMove = (e: TouchEvent) => {
-      if (!isTouching) return;
-      e.preventDefault();
-
-      const touch = e.touches[0];
-      setCurrentTouchPos({ x: touch.clientX, y: touch.clientY });
-
-      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
-      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
-
-      // 드래그 시작 임계값 (10px)
-      if (!isDraggingTouch && (deltaX > 10 || deltaY > 10)) {
+      // Long press 타이머 시작 (500ms)
+      const timer = setTimeout(() => {
         setIsDraggingTouch(true);
         setLocalDragState((prev) => ({
           ...prev,
@@ -86,7 +76,39 @@ export default function Panel({
           draggedNodeId: id,
         }));
         onDragStart(id);
+      }, 500);
+
+      setLongPressTimer(timer);
+    };
+
+    // document 레벨에서 터치 이벤트 처리
+    const handleDocumentTouchMove = (e: TouchEvent) => {
+      if (!isTouching) return;
+
+      const touch = e.touches[0];
+      setCurrentTouchPos({ x: touch.clientX, y: touch.clientY });
+
+      // 드래그 중이 아닐 때는 스크롤 허용
+      if (!isDraggingTouch) {
+        const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+        const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+
+        // 드래그 시작 임계값 (20px) - 스크롤과 구분하기 위해 더 크게 설정
+        if (deltaX > 20 || deltaY > 20) {
+          // Long press 타이머 취소
+          if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            setLongPressTimer(null);
+          }
+          setIsTouching(false);
+          setIsDraggingTouch(false);
+          return;
+        }
+        return; // 드래그 중이 아니면 스크롤 허용
       }
+
+      // 드래그 중일 때만 preventDefault
+      e.preventDefault();
 
       if (isDraggingTouch) {
         // 현재 터치 위치에서 가장 가까운 패널 찾기
@@ -147,9 +169,15 @@ export default function Panel({
 
     const handleDocumentTouchEnd = (e: TouchEvent) => {
       if (!isTouching) return;
-      e.preventDefault();
+
+      // Long press 타이머 취소
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        setLongPressTimer(null);
+      }
 
       if (isDraggingTouch) {
+        e.preventDefault();
         const draggedNodeId = globalDragState.draggedNodeId;
         const targetNodeId = localDragState.targetNodeId;
         const position = localDragState.position;
@@ -172,10 +200,8 @@ export default function Panel({
       setDragOffset({ x: 0, y: 0 });
     };
 
-    // passive: false로 설정하여 preventDefault 사용 가능
-    element.addEventListener("touchstart", handleTouchStart, {
-      passive: false,
-    });
+    // passive: true로 설정하여 스크롤 허용 (드래그 중이 아닐 때)
+    element.addEventListener("touchstart", handleTouchStart, { passive: true });
     document.addEventListener("touchmove", handleDocumentTouchMove, {
       passive: false,
     });
@@ -187,6 +213,9 @@ export default function Panel({
       element.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchmove", handleDocumentTouchMove);
       document.removeEventListener("touchend", handleDocumentTouchEnd);
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+      }
     };
   }, [
     isTouching,
@@ -199,6 +228,7 @@ export default function Panel({
     onDrop,
     onDragEnd,
     onDragOver,
+    longPressTimer,
   ]);
 
   const handleDragStart = useCallback(
@@ -339,7 +369,6 @@ export default function Panel({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onDragEnd={handleDragEnd}
-        style={{ touchAction: "none" }} // 모바일에서 스크롤 방지
       >
         {isTarget && targetPosition === "left" && (
           <div className="absolute top-0 left-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
