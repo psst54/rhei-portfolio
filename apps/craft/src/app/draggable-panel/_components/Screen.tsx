@@ -7,21 +7,21 @@ import Wrapper from "./Wrapper";
 
 const initialTree: Node = {
   type: "split",
-  id: "split1",
+  id: "split-1",
   left: {
     type: "panel",
-    id: "panel1",
+    id: "panel-1",
   },
   right: {
     type: "split",
-    id: "split2",
+    id: "split-2",
     left: {
       type: "panel",
-      id: "panel2",
+      id: "panel-2",
     },
     right: {
       type: "panel",
-      id: "panel3",
+      id: "panel-3",
     },
     orientation: "H",
     ratio: 0.6,
@@ -144,6 +144,14 @@ export default function Screen() {
 
       const updatedTree = replaceNode(newTree, targetNodeId, newSplitNode);
       setTree(updatedTree);
+
+      // drop 후 dragState 초기화
+      setDragState({
+        isDragging: false,
+        draggedNodeId: null,
+        targetNodeId: null,
+        position: null,
+      });
     },
     [tree, findNode, removeNode],
   );

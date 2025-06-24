@@ -15,7 +15,7 @@ export default function TreeVisualizer({ tree }: { tree: Node }) {
     return (
       <div key={node.id} className="text-sm">
         <div className="text-green-500">
-          {indent}└─ {node.id} ({node.orientation})
+          {indent}● {node.id} ({node.orientation})
         </div>
         <div className="ml-4">
           {renderNode(node.left, depth + 1)}
