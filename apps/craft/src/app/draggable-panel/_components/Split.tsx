@@ -81,38 +81,23 @@ export default function Split({
   const leftStyle = {
     flexBasis: `${ratio * 100}%`,
     flexGrow: 0,
-    flexShrink: 0,
+    // flexShrink: 0,
     minWidth: 0,
     minHeight: 0,
   };
   const rightStyle = {
     flexBasis: `${(1 - ratio) * 100}%`,
     flexGrow: 0,
-    flexShrink: 0,
+    // flexShrink: 0,
     minWidth: 0,
     minHeight: 0,
   };
 
-  // 리사이저 스타일
-  const resizerStyle =
-    orientation === "H"
-      ? {
-          top: `calc(${(ratio * 100).toFixed(2)}%)`,
-          left: 0,
-          right: 0,
-          height: "6px",
-          transform: "translateY(-50%)",
-        }
-      : {
-          left: `calc(${(ratio * 100).toFixed(2)}%)`,
-          top: 0,
-          bottom: 0,
-          width: "6px",
-          transform: "translateX(-50%)",
-        };
   const resizerClass =
-    "absolute z-20 bg-blue-400 transition-opacity duration-200 " +
-    (orientation === "H" ? "cursor-row-resize" : "cursor-col-resize");
+    "transition-opacity duration-200 hover:bg-white rounded-full " +
+    (orientation === "H"
+      ? "cursor-row-resize h-2 w-[calc(100%-2rem)] mx-auto"
+      : "cursor-col-resize w-2 h-[calc(100%-2rem)] my-auto");
 
   return (
     <div
@@ -136,18 +121,7 @@ export default function Split({
         />
       </div>
       {/* 리사이저 */}
-      <div
-        className={resizerClass}
-        style={{
-          ...resizerStyle,
-          opacity: 1,
-          background: "teal",
-          width: orientation === "H" ? "100%" : "2px",
-          height: orientation === "H" ? "2px" : "100%",
-          zIndex: 9999,
-        }}
-        onMouseDown={handleDragStart}
-      />
+      <div className={resizerClass} onMouseDown={handleDragStart} />
       <div style={rightStyle} className="relative flex overflow-hidden">
         <Wrapper
           node={right}
