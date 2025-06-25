@@ -362,7 +362,7 @@ export default function Panel({
         data-panel-id={id}
         className={`relative flex h-full w-full items-center justify-center rounded-2xl bg-blue-500/10 transition-all duration-200 ${
           isBeingDragged ? "scale-95 opacity-50" : ""
-        } ${isTarget ? "bg-blue-500/30 ring-2 ring-blue-500" : ""}`}
+        }`}
         draggable
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
