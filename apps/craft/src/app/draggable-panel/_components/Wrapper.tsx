@@ -9,6 +9,7 @@ export default function Wrapper({
   onDrop,
   onDragEnd,
   globalDragState,
+  onRatioChange,
 }: {
   node: Node;
   onDragStart: (nodeId: string) => void;
@@ -19,6 +20,7 @@ export default function Wrapper({
     position: "left" | "right" | "top" | "bottom",
   ) => void;
   onDragEnd: () => void;
+  onRatioChange: (nodeId: string, ratio: number) => void;
   globalDragState: DragState;
 }) {
   if (node.type === "split") {
@@ -29,6 +31,7 @@ export default function Wrapper({
         onDragOver={onDragOver}
         onDrop={onDrop}
         onDragEnd={onDragEnd}
+        onRatioChange={onRatioChange}
         globalDragState={globalDragState}
       />
     );

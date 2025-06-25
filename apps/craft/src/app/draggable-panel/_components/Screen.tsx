@@ -196,6 +196,24 @@ export default function Screen() {
     setTree(initialTree);
   }, []);
 
+  // SplitNode의 ratio를 업데이트하는 함수
+  const handleRatioChange = useCallback((id: string, newRatio: number) => {
+    function updateRatio(node: Node): Node {
+      if (node.type === "split") {
+        if (node.id === id) {
+          return { ...node, ratio: newRatio };
+        }
+        return {
+          ...node,
+          left: updateRatio(node.left),
+          right: updateRatio(node.right),
+        };
+      }
+      return node;
+    }
+    setTree((prev) => updateRatio(prev));
+  }, []);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -216,6 +234,7 @@ export default function Screen() {
           onDrop={handleDrop}
           onDragEnd={handleDragEnd}
           globalDragState={dragState}
+          onRatioChange={handleRatioChange}
         />
       </div>
 
