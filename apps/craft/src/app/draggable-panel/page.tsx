@@ -9,7 +9,7 @@ export default function Page() {
           Draggable Panel
         </h1>
 
-        <ul className="mx-auto mt-2 flex w-full max-w-6xl flex-col gap-2 text-gray-600">
+        <ul className="mx-auto mt-2 flex w-full max-w-6xl flex-col gap-2 text-gray-500 dark:text-gray-200">
           <li>
             패널을 다른 패널 위로 옮겨 화면 구조를 변경할 수 있습니다. 패널을
             잡고 다른 패널 위로 드래그하면 해당 패널이 반으로 분할됩니다.

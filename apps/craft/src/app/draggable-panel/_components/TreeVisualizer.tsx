@@ -26,7 +26,7 @@ export default function TreeVisualizer({ tree }: { tree: Node }) {
   };
 
   return (
-    <div className="rounded-lg bg-gray-100 p-4">
+    <div className="rounded-lg bg-gray-100 p-4 dark:bg-gray-600">
       <h3 className="mb-2 text-sm font-bold">현재 Tree 구조:</h3>
       <div className="font-mono text-xs">{renderNode(tree)}</div>
     </div>

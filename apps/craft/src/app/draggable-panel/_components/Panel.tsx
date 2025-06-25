@@ -341,7 +341,7 @@ export default function Panel({
       {/* 터치 드래그 시 보여줄 고정된 요소 */}
       {isTouching && isDraggingTouch && isBeingDragged && (
         <div
-          className="fixed flex items-center justify-center rounded-2xl border-2 border-blue-500 bg-blue-500/10"
+          className="fixed flex items-center justify-center rounded-2xl border-2 border-blue-500 bg-blue-400/20 dark:border-orange-500 dark:bg-orange-400/30"
           style={{
             top: currentTouchPos.y - dragOffset.y,
             left: currentTouchPos.x - dragOffset.x,
@@ -360,7 +360,7 @@ export default function Panel({
       <div
         ref={touchRef}
         data-panel-id={id}
-        className={`relative flex h-full w-full items-center justify-center rounded-2xl bg-blue-500/10 transition-all duration-200 ${
+        className={`relative flex h-full w-full items-center justify-center rounded-2xl bg-blue-400/20 transition-all duration-200 dark:bg-orange-400/30 ${
           isBeingDragged ? "scale-95 opacity-50" : ""
         }`}
         draggable
@@ -371,31 +371,39 @@ export default function Panel({
         onDragEnd={handleDragEnd}
       >
         {isTarget && targetPosition === "left" && (
-          <div className="absolute top-0 left-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
-            <span className="text-sm font-bold text-blue-600">왼쪽</span>
+          <div className="absolute top-0 left-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20 dark:border-orange-500 dark:bg-orange-200/20">
+            <span className="text-sm font-bold text-blue-600 dark:text-orange-100">
+              왼쪽
+            </span>
           </div>
         )}
 
         {isTarget && targetPosition === "right" && (
-          <div className="absolute top-0 right-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
-            <span className="text-sm font-bold text-blue-600">오른쪽</span>
+          <div className="absolute top-0 right-0 z-10 flex h-full w-[50%] items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20 dark:border-orange-500 dark:bg-orange-200/20">
+            <span className="text-sm font-bold text-blue-600 dark:text-orange-100">
+              오른쪽
+            </span>
           </div>
         )}
 
         {isTarget && targetPosition === "top" && (
-          <div className="absolute top-0 left-0 z-10 flex h-[50%] w-full items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
-            <span className="text-sm font-bold text-blue-600">위쪽</span>
+          <div className="absolute top-0 left-0 z-10 flex h-[50%] w-full items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20 dark:border-orange-500 dark:bg-orange-200/20">
+            <span className="text-sm font-bold text-blue-600 dark:text-orange-100">
+              위쪽
+            </span>
           </div>
         )}
 
         {isTarget && targetPosition === "bottom" && (
-          <div className="absolute bottom-0 left-0 z-10 flex h-[50%] w-full items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20">
-            <span className="text-sm font-bold text-blue-600">아래쪽</span>
+          <div className="absolute bottom-0 left-0 z-10 flex h-[50%] w-full items-center justify-center rounded-2xl border-2 border-dashed border-blue-500 bg-blue-500/20 dark:border-orange-500 dark:bg-orange-200/20">
+            <span className="text-sm font-bold text-blue-600 dark:text-orange-100">
+              아래쪽
+            </span>
           </div>
         )}
 
         <span
-          className={`font-bold transition-all duration-200 ${isBeingDragged ? "text-blue-300" : "text-white"}`}
+          className={`font-bold transition-all duration-200 ${isBeingDragged ? "text-blue-300 dark:text-orange-300" : "text-white"}`}
         >
           {id}
         </span>

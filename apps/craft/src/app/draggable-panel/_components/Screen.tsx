@@ -220,13 +220,13 @@ export default function Screen() {
         <h2 className="text-lg font-semibold">패널 레이아웃</h2>
         <button
           onClick={handleReset}
-          className="rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+          className="rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 dark:bg-orange-500 dark:hover:bg-orange-600"
         >
           초기화
         </button>
       </div>
 
-      <div className="h-[60dvh] min-h-full w-full rounded-2xl bg-blue-500/10 p-2">
+      <div className="h-[60dvh] min-h-full w-full rounded-2xl bg-blue-400/20 p-2 dark:bg-orange-400/30">
         <Wrapper
           node={tree}
           onDragStart={handleDragStart}
