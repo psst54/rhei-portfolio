@@ -8,11 +8,17 @@ export default function Page() {
         <h1 className="mx-auto w-full max-w-6xl text-[2rem] font-bold">
           Draggable Panel
         </h1>
-        
-        <p className="mx-auto mt-2 w-full max-w-6xl text-gray-600">
-          패널을 드래그하여 tree 구조를 변경하고 새로 렌더링해보세요. 
-          패널을 다른 패널 위에 드래그하면 분할됩니다.
-        </p>
+
+        <ul className="mx-auto mt-2 flex w-full max-w-6xl flex-col gap-2 text-gray-600">
+          <li>
+            패널을 다른 패널 위로 옮겨 화면 구조를 변경할 수 있습니다. 패널을
+            잡고 다른 패널 위로 드래그하면 해당 패널이 반으로 분할됩니다.
+          </li>
+          <li>
+            (PC) 패널과 패널 사이에 두 패널의 크기 비율을 조절할 수 있는 바가
+            있습니다. 바를 이동시켜서 패널 분할 비율을 변경해보세요.
+          </li>
+        </ul>
 
         <section className="mx-auto mt-4 flex w-full max-w-6xl flex-col gap-8">
           <Screen />
