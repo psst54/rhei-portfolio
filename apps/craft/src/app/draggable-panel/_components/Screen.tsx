@@ -17,7 +17,7 @@ const initialTree: Node = {
     id: "split-2",
     left: {
       type: "split",
-      id: "split-1",
+      id: "split-3",
       left: {
         type: "panel",
         id: "panel-2",
@@ -34,10 +34,10 @@ const initialTree: Node = {
       id: "panel-4",
     },
     orientation: "H",
-    ratio: 0.5,
+    ratio: 0.3,
   },
   orientation: "W",
-  ratio: 0.5,
+  ratio: 0.6,
 };
 
 export default function Screen() {
